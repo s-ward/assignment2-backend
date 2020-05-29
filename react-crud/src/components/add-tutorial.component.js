@@ -8,6 +8,7 @@ export default class AddTutorial extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeAuthor = this.onChangeAuthor.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
+    this.onChangeUrl = this.onChangeUrl.bind(this);
     this.saveTutorial = this.saveTutorial.bind(this);
     this.newTutorial = this.newTutorial.bind(this);
 
@@ -17,6 +18,7 @@ export default class AddTutorial extends Component {
       description: "", 
       author: "",
       date: "",
+      url: "",
       published: false,
 
       submitted: false
@@ -47,12 +49,19 @@ export default class AddTutorial extends Component {
     });
   }
 
+  onChangeUrl(e) {
+    this.setState({
+      url: e.target.value
+    });
+  }
+
   saveTutorial() {
     var data = {
       title: this.state.title,
       description: this.state.description,
       author: this.state.author,
-      date: this.state.date
+      date: this.state.date,
+      url: this.state.url
     };
 
     TutorialDataService.create(data)
@@ -63,6 +72,7 @@ export default class AddTutorial extends Component {
           author: response.data.author,
           description: response.data.description,
           date: response.data.date,
+          url: response.data.title,
           published: response.data.published,
 
           submitted: true
@@ -81,6 +91,7 @@ export default class AddTutorial extends Component {
       description: "",
       author: "",
       date: "",
+      url: "",
       published: false,
 
       submitted: false
@@ -113,7 +124,7 @@ export default class AddTutorial extends Component {
               </div>
 
               <div className="form-group">
-                <label htmlFor="description">Description</label>
+                <label htmlFor="description">Description (Result?)</label>
                 <input
                   type="text"
                   className="form-control"
@@ -148,6 +159,20 @@ export default class AddTutorial extends Component {
                   value={this.state.date}
                   onChange={this.onChangeDate}
                   name="date"
+                />
+              </div>
+
+
+              <div className="form-group">
+                <label htmlFor="url">URL</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="url"
+                  required
+                  value={this.state.url}
+                  onChange={this.onChangeUrl}
+                  name="url"
                 />
               </div>
 

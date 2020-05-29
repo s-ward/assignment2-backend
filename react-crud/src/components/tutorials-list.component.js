@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
+//import {Button, Modal} from "react-dom";
+import {Button, Modal, Badge} from"react-bootstrap";
+import Modal2 from "./modal2";
+
+
 
 export default class TutorialsList extends Component {
   constructor(props) {
@@ -15,8 +20,10 @@ export default class TutorialsList extends Component {
     this.state = {
       tutorials: [],
       currentTutorial: null,
+      tutorialDialog: false,
       currentIndex: -1,
       tutorialDate: "",
+      showInfo: false,
       searchTitle: ""
     };
   }
@@ -32,6 +39,20 @@ export default class TutorialsList extends Component {
       searchTitle: searchTitle
     });
   }
+
+
+  toggleShow() {
+    this.setState({showInfo: !this.state.showInfo});
+};
+
+showInfo() {
+  this.setState({showInfo: true});
+};
+
+hideInfo = e => {
+  this.setState({showInfo: false});
+};
+
 
   retrieveTutorials() {
     TutorialDataService.getAll()
@@ -53,6 +74,14 @@ export default class TutorialsList extends Component {
       currentIndex: -1
     });
   }
+
+  openTutorialDialog = event => {
+    this.setState({ tutorialDialog: true });
+  };
+
+  closeTutorialDialog = event => {
+    this.setState({ tutorialDialog: false });
+  };
 
   setActiveTutorial(tutorial, index) {
     var tempDate = new Date(tutorial.date);
@@ -88,14 +117,50 @@ export default class TutorialsList extends Component {
       });
   }
   
+
+
+ 
   
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex, tutorialDate} = this.state;
-    
+    const { searchTitle, tutorials, currentTutorial, currentIndex, 
+      tutorialDate} = this.state;
+
+
+
+      
     return (
-      <div className="list row">
-        <div className="col-md-8">
+<div>
+
+
+
+
+
+
+{/* <div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div> */}
+      
+      <div className="container">
+        <div className="row">
+        <div className="col"></div>
+          <div className="col-6">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -113,12 +178,145 @@ export default class TutorialsList extends Component {
                 Search
               </button>
             </div>
+            </div>
           </div>
+          <div className="col"></div>
         </div>
-        <div className="col-md-6">
+
+
+
+        <div className="row">
           <h4>Articles List</h4>
 
-          <ul className="list-group">
+          <table className="table table-sm table-striped 
+                            table-hover
+                            table-bordered">
+            <thead>
+              <tr><th>Title</th>
+                  <th>Result</th>
+                  <th>Author</th>
+                  <th>Year</th>
+                  <th>URL</th>
+                  <th>Info</th>
+                  <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+           
+         
+                {tutorials &&
+                tutorials.map((tutorial, index) => ( 
+        
+                  <tr /* className={"group-item " + 
+                (index === currentIndex ? "active" :"")
+                  }
+                  onClick={() => this.setActiveTutorial(tutorial, index)}
+                  key={index}  */>
+                    <td>{tutorial.title}</td>
+                    <td>{tutorial.description}</td>
+                    <td>{tutorial.author}</td>
+                    <td>{new Date(tutorial.date).getFullYear()}</td>
+                    <td>{tutorial.url}</td>
+                    <td>
+{/*                       <button className="btn btn-primary"
+                                data-toggle="modal" 
+                                data-target="#exampleModal">
+                      Info
+                    </button> */}
+
+
+{/*                     <Badge as="button"
+                
+                className="badge badge-warning"
+                onClick={e => {this.showInfo()}}
+              >
+                Edit
+              </Badge> */}
+
+{/*               <Badge as="button"
+                
+                className="badge badge-warning"
+                onClick={e => {this.showInfo()}}
+              >
+                Edit
+              </Badge> */}
+
+              <Link
+                
+                className="badge badge-success"
+                onClick={e => {this.showInfo()}}
+              >
+                Info
+              </Link>
+
+
+
+{/*                     <div  className="modal fade"
+                          id="infoModal"
+                          tabindex="-1"
+                          role="dialog"
+                          aria-labelledby="infoModalLabel"
+                          aria-hidden="true">
+                        <div className="modal-dialog" role="document">
+                          <div className="modal-content">
+                            <div className="modal-header">
+                              More Info
+                            </div>
+                            <div className="modal-body">
+                              More info about Article here
+                            </div>
+                            <div className="modal-footer">
+                              <button className="btn btn-secondary" 
+                                    data-dismiss="modal">Close
+                                    </button>
+                            </div>
+                          </div>
+                        </div>
+
+
+                          </div> */}
+
+                         
+
+
+
+
+
+
+                    
+{/*                     <td><button className="badge badge-success" 
+                              onClick={this.openTutorialDialog}>
+                                  Info
+                                </button> */}
+                      
+                      {/* <Button onClick={this.openTutorialDialog}
+                    variant="contained"
+                    className="badge badge-success"> Info</Button> */}
+                    
+                    </td>
+                    
+                    <td><Link
+                to={"/tutorials/" + tutorial.id}
+                className="badge badge-warning"
+              >
+                Edit
+              </Link></td>
+            
+              
+
+
+          </tr>
+          
+          ))}
+          </tbody>
+          </table>
+          <Modal2
+            open={this.state.showInfo}
+            onClose={this.hideInfo}>More Info
+
+            </Modal2> 
+
+{/*           <ul className="list-group">
             {tutorials &&
               tutorials.map((tutorial, index) => (
                 <li
@@ -130,18 +328,57 @@ export default class TutorialsList extends Component {
                   key={index}
                 >
                   {tutorial.title}
+                  
                 </li>
               ))}
-          </ul>
+          </ul>  */}
 
-          <button
+{/*           <button
             className="m-3 btn btn-sm btn-danger"
             onClick={this.removeAllTutorials}
           >
             Remove All
-          </button>
+          </button> */}
+
+{/*          <button
+            className="m-3 btn btn-sm btn-danger"
+            onClick={this.removeAllTutorials}
+          >
+            Remove All
+          </button> */}
+
+
+{/*           <button className="btn btn-primary"
+                                data-toggle="modal" 
+                                data-target="#exampleModal">
+                      Info
+                    </button>
+
+                    <button className="btn btn-primary"
+                    onClick="document.getElementById('id01'.style.display='block'"
+                                className="w3-button">Open Modal
+     
+                    </button>
+
+                    <button className="btn btn-primary"
+                    onClick="document.getElementById('id01'.style.display='block'"
+                                className="w3-button">Open Modal
+     
+                    </button> */}
+                    
+
+
+
+
+</div>
+
+
+
         </div>
-        <div className="col-md-6">
+
+
+        
+{/*         <div className="col-md-6">
           {currentTutorial ? (
             <div>
               <h4>Article</h4>
@@ -198,8 +435,14 @@ export default class TutorialsList extends Component {
               <p>Please click on an Article</p>
             </div>
           )}
-        </div>
+        </div> */}
+
+
+
+
+
       </div>
+      
     );
   }
 }

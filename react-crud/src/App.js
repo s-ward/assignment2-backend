@@ -7,6 +7,8 @@ import './App.css';
 import AddTutorial from "./components/add-tutorial.component";
 import Tutorial from "./components/tutorial.component";
 import TutorialsList from "./components/tutorials-list.component";
+import TestPage from "./components/test-page";
+
 
 class App extends Component {
   render() {
@@ -28,6 +30,12 @@ class App extends Component {
                   Add
                 </Link>
               </li>
+              <li className = "nav-item">
+                <Link to={"/test-page"} className="nav-link">
+                  Test Page
+                </Link>
+              </li>
+
             </div>
           </nav>
           <div className="container mt-3">
@@ -35,6 +43,8 @@ class App extends Component {
               <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
               <Route exact path="/add" component={AddTutorial} />
               <Route path="/tutorials/:id" component={Tutorial} />
+              <Route path="/test-page" component={TestPage} />
+
             </Switch>
           </div>
         </div>

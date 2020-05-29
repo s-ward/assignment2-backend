@@ -7,6 +7,7 @@ module.exports = mongoose => {
           author: String,
           description: String,
           date: Date,
+          url: String,
           published: Boolean
         },
         { timestamps: true }

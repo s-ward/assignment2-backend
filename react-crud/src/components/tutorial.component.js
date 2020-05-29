@@ -8,6 +8,7 @@ export default class Tutorial extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeAuthor = this.onChangeAuthor.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
+    this.onChangeUrl = this.onChangeUrl.bind(this);
     this.getTutorial = this.getTutorial.bind(this);
     this.updatePublished = this.updatePublished.bind(this);
     this.updateTutorial = this.updateTutorial.bind(this);
@@ -20,6 +21,7 @@ export default class Tutorial extends Component {
         author: "",
         date: "",
         description: "",
+        url: "",
         published: false
       },
       message: ""
@@ -76,6 +78,17 @@ export default class Tutorial extends Component {
     }));
   }
 
+  onChangeUrl(e) {
+    const url = e.target.value;
+
+    this.setState(prevState => ({
+      currentTutorial: {
+        ...prevState.currentTutorial,
+        url: url
+      }
+    }));
+  }
+
   getTutorial(id) {
     TutorialDataService.get(id)
       .then(response => {
@@ -96,6 +109,7 @@ export default class Tutorial extends Component {
       description: this.state.currentTutorial.description,
       author: this.state.currentTutorial.author,
       date: this.state.currentTutorial.date,
+      url: this.state.currentTutorial.url,
       published: status
     };
 
@@ -189,10 +203,31 @@ export default class Tutorial extends Component {
                   type="date"
                   className="form-control"
                   id="date"
-                  value={currentTutorial.date}
+                  //value={new Date(parseInt(currentTutorial.date.substr(0,10)))}
+                  //value={(new Date(JSON.parse("\"2014-01-01T23:28:56.782Z\"")))}
+                  value={currentTutorial.date ? 
+                      currentTutorial.date.substr(0,10) : null}
+                  //value="2000-01-27"
                   onChange={this.onChangeDate}
+
+                  
+
                 />
               </div>
+
+
+              <div className="form-group">
+                <label htmlFor="url">URL</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="url"
+                  required
+                  value={currentTutorial.url}
+                  onChange={this.onChangeUrl}
+                />
+              </div>
+
 
               <div className="form-group">
                 <label>
