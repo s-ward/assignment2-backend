@@ -2,7 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+require("dotenv").config()
+
 const app = express();
+
+//const routes = require('./app/routes/tutorial.routes');
 
 var corsOptions = {
   origin: "http://localhost:8081"
@@ -16,6 +20,9 @@ app.use(bodyParser.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
+
+app.use(express.static('react-crud/build'));
+//app.use(routes);
 
 const db = require("./app/models");
 db.mongoose
